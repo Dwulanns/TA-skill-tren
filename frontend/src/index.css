@@ -1,0 +1,622 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Explicit dark/light theme rules for html element */
+html[data-theme="dark"] {
+  background-color: #0a0e17 !important;
+  color: #f8fafc !important;
+  color-scheme: dark;
+}
+
+html[data-theme="light"] {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+  color-scheme: light;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color: var(--text-primary) !important;
+  min-height: 100vh;
+  background-color: var(--bg-primary) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ============================================
+   THEME VARIABLES
+   ============================================ */
+
+/* Default (Dark) Theme - Applied to :root by default */
+:root {
+  --bg-primary: #0a0e17;
+  --bg-secondary: #141a26;
+  --bg-tertiary: #1f2737;
+  --bg-hover: #2d3748;
+  --text-primary: #f8fafc;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #cbd5e0;
+  --accent-primary: #0ea5e9;
+  --accent-secondary: #06b6d4;
+  --accent-danger: #ef4444;
+  --accent-success: #10b981;
+  --accent-warning: #f59e0b;
+  --border-color: #475569;
+  --divider-color: #334155;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  /* Spacing system */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  --spacing-3xl: 4rem;
+}
+
+/* Explicit Dark Theme */
+[data-theme="dark"] {
+  --bg-primary: #0a0e17;
+  --bg-secondary: #141a26;
+  --bg-tertiary: #1f2737;
+  --bg-hover: #2d3748;
+  --text-primary: #f8fafc;
+  --text-secondary: #e2e8f0;
+  --text-tertiary: #cbd5e0;
+  --accent-primary: #0ea5e9;
+  --accent-secondary: #06b6d4;
+  --accent-danger: #ef4444;
+  --accent-success: #10b981;
+  --accent-warning: #f59e0b;
+  --border-color: #475569;
+  --divider-color: #334155;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+}
+
+/* Light Theme - Override for light mode */
+[data-theme="light"] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-hover: #e0f2fe;
+  --text-primary: #0f172a;
+  --text-secondary: #1e293b;
+  --text-tertiary: #475569;
+  --accent-primary: #0369a1;
+  --accent-secondary: #0284c7;
+  --accent-danger: #dc2626;
+  --accent-success: #059669;
+  --accent-warning: #d97706;
+  --border-color: #cbd5e0;
+  --divider-color: #e2e8f0;
+  --shadow-sm: 0 1px 3px 0 rgba(2, 132, 199, 0.08);
+  --shadow-md: 0 4px 12px 0 rgba(2, 132, 199, 0.12);
+  --shadow-lg: 0 10px 25px 0 rgba(2, 132, 199, 0.15);
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 4px;
+  border: 2px solid var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-secondary);
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+  color: var(--text-primary);
+}
+
+h1 { font-size: 2rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 1rem; }
+
+p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--accent-secondary);
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animation Utilities */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.4s ease-out;
+}
+
+/* ============================================
+   BUTTONS & INTERACTIVE ELEMENTS
+   ============================================ */
+
+button, .btn {
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: var(--accent-primary);
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+button:hover:not(:disabled), .btn:hover:not(:disabled) {
+  background-color: var(--accent-secondary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+button:active:not(:disabled), .btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+button:disabled, .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Button Variants */
+.btn-secondary {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background-color: var(--bg-hover);
+  border-color: var(--accent-primary);
+}
+
+.btn-danger {
+  background-color: var(--accent-danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background-color: #f87171;
+}
+
+.btn-success {
+  background-color: var(--accent-success);
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #34d399;
+}
+
+/* ============================================
+   FORM ELEMENTS
+   ============================================ */
+
+input, select, textarea {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   CARDS & CONTAINERS
+   ============================================ */
+
+.card, [role="card"] {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 0.625rem;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.card:hover, [role="card"]:hover {
+  border-color: var(--accent-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   LAYOUT UTILITIES
+   ============================================ */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ============================================
+   TEXT UTILITIES
+   ============================================ */
+
+.text-muted {
+  color: var(--text-tertiary);
+}
+
+.text-primary {
+  color: var(--accent-primary);
+}
+
+.text-success {
+  color: var(--accent-success);
+}
+
+.text-danger {
+  color: var(--accent-danger);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+@media (max-width: 768px) {
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.35rem; }
+  h3 { font-size: 1.2rem; }
+  h4 { font-size: 1rem; }
+  
+  body {
+    font-size: 14px;
+  }
+  
+  .card {
+    padding: 1rem;
+  }
+  
+  button, .btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 { font-size: 1.35rem; }
+  h2 { font-size: 1.2rem; }
+  h3 { font-size: 1.05rem; }
+  
+  body {
+    font-size: 13px;
+  }
+}
+
+/* ============================================
+   CHAKRA DARK MODE COMPONENT STYLING
+   ============================================ */
+
+/* Ensure dark mode is applied to all pages */
+[data-theme="dark"] {
+  background-color: #0a0e17;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] body {
+  background-color: #0a0e17;
+  color: #f8fafc;
+}
+
+/* Chakra Checkbox in dark mode */
+[data-theme="dark"] .chakra-checkbox__control {
+  border-color: #475569;
+  background-color: #141a26;
+}
+
+[data-theme="dark"] .chakra-checkbox__control:checked {
+  background-color: #0284c7;
+  border-color: #0284c7;
+}
+
+[data-theme="dark"] .chakra-checkbox__label {
+  color: #f8fafc;
+}
+
+/* Chakra Input in dark mode */
+[data-theme="dark"] .chakra-input {
+  background-color: #1f2737 !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+[data-theme="dark"] .chakra-input::placeholder {
+  color: #cbd5e0 !important;
+}
+
+[data-theme="dark"] .chakra-input:focus {
+  border-color: #0284c7 !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.1) !important;
+}
+
+/* Chakra Select in dark mode */
+[data-theme="dark"] .chakra-select {
+  background-color: #1f2737 !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+[data-theme="dark"] .chakra-select:focus {
+  border-color: #0284c7 !important;
+}
+
+/* Chakra Textarea in dark mode */
+[data-theme="dark"] .chakra-textarea {
+  background-color: #1f2737 !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+[data-theme="dark"] .chakra-textarea::placeholder {
+  color: #cbd5e0 !important;
+}
+
+[data-theme="dark"] .chakra-textarea:focus {
+  border-color: #0284c7 !important;
+}
+
+/* Chakra Button in dark mode */
+[data-theme="dark"] [role="button"] {
+  color: #f8fafc;
+}
+
+/* Chakra Modal in dark mode */
+[data-theme="dark"] [role="dialog"] {
+  background-color: #1f2737 !important;
+  color: #f8fafc !important;
+}
+
+/* Chakra Table in dark mode */
+[data-theme="dark"] table {
+  background-color: #1f2737;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] thead {
+  background-color: #2d3748;
+  color: #f8fafc;
+}
+
+[data-theme="dark"] tbody tr {
+  border-color: #475569;
+}
+
+[data-theme="dark"] tbody tr:hover {
+  background-color: #1f2737;
+}
+
+/* Chakra Badge in dark mode */
+[data-theme="dark"] .chakra-badge {
+  background-color: #2d3748;
+  color: #f8fafc;
+}
+
+/* Chakra Divider in dark mode */
+[data-theme="dark"] [role="separator"],
+[data-theme="dark"] .chakra-divider {
+  border-color: #475569;
+}
+
+/* Chakra Card/Box backgrounds */
+[data-theme="dark"] [role="region"],
+[data-theme="dark"] [data-testid="box"] {
+  background-color: inherit !important;
+}
+
+/* Ensure text is not white on white in dark mode */
+[data-theme="dark"] {
+  --chakra-colors-gray-50: #0a0e17;
+  --chakra-colors-gray-100: #0a0e17;
+  --chakra-colors-gray-200: #141a26;
+  --chakra-colors-gray-300: #1f2737;
+  --chakra-colors-gray-400: #2d3748;
+  --chakra-colors-gray-500: #475569;
+  --chakra-colors-gray-600: #cbd5e0;
+  --chakra-colors-gray-700: #e2e8f0;
+  --chakra-colors-gray-800: #f8fafc;
+  --chakra-colors-gray-850: #f8fafc;
+  --chakra-colors-gray-900: #f8fafc;
+}
+
+/* FORCE DARK MODE FOR ALL ELEMENTS */
+html[data-theme="dark"],
+html[data-theme="dark"] body,
+html[data-theme="dark"] #root {
+  background-color: #0a0e17 !important;
+  color: #f8fafc !important;
+}
+
+[data-theme="dark"] {
+  background-color: #0a0e17 !important;
+  color: #f8fafc !important;
+}
+
+/* ============================================
+   SPACING UTILITIES
+   ============================================ */
+
+/* Container padding utilities */
+.container-sm { padding: 1rem; }
+.container-md { padding: 1.5rem; }
+.container-lg { padding: 2rem; }
+.container-xl { padding: 2.5rem; }
+
+/* Section spacing */
+.section-spacing {
+  padding: 2rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .section-spacing { padding: 2.5rem 1.5rem; }
+  .container-sm { padding: 1.5rem; }
+  .container-md { padding: 2rem; }
+  .container-lg { padding: 2.5rem; }
+  .container-xl { padding: 3rem; }
+}
+
+@media (min-width: 1024px) {
+  .section-spacing { padding: 3rem 2rem; }
+  .container-sm { padding: 2rem; }
+  .container-md { padding: 2.5rem; }
+  .container-lg { padding: 3rem; }
+  .container-xl { padding: 4rem; }
+}
+
+/* Vertical spacing */
+.space-y-tight { gap: 0.75rem; }
+.space-y-normal { gap: 1.5rem; }
+.space-y-loose { gap: 2rem; }
+.space-y-extra { gap: 3rem; }
+
+/* Horizontal spacing */
+.space-x-tight { gap: 0.75rem; }
+.space-x-normal { gap: 1.5rem; }
+.space-x-loose { gap: 2rem; }
+.space-x-extra { gap: 3rem; }
