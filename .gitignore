@@ -20,6 +20,7 @@ ENV/
 *.sqlite
 *.csv
 *.json
+!vercel.json  
 *.html
 !package.json
 !package-lock.json
