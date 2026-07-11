@@ -21,7 +21,7 @@ ENV/
 *.csv
 *.json
 !vercel.json  
-*.html
+# *.html
 !package.json
 !package-lock.json
 
