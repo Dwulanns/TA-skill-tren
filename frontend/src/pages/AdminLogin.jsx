@@ -21,6 +21,7 @@ import {
   keyframes,
 } from "@chakra-ui/react";
 import { Lock, Eye, EyeOff, Mail, BarChart3, Sparkles, TrendingUp, Users } from "lucide-react";
+import { API_ENDPOINTS } from "../config/api";
 
 // Animations
 const floatAnimation = keyframes`
@@ -73,8 +74,9 @@ const AdminLogin = ({ onLoginSuccess }) => {
 
       const backendUrl = import.meta.env.VITE_API_URL || "";
       console.log("🌐 Backend URL:", backendUrl);
+      console.log("🌐 Login URL:", API_ENDPOINTS.ADMIN.LOGIN);
 
-      const response = await fetch(`${backendUrl}/api/auth/login`, {
+      const response = await fetch(API_ENDPOINTS.ADMIN.LOGIN, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

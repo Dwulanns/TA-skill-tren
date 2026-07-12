@@ -77,11 +77,13 @@ async def login(
     """
     print(f"🔐 Login attempt - Email: {credentials.email}")
     
-    # Find admin by email
-    admin = db.query(Admin).filter(Admin.email == credentials.email).first()
+    # Find admin by email or username
+    admin = db.query(Admin).filter(
+        (Admin.email == credentials.email) | (Admin.username == credentials.email)
+    ).first()
     
     if not admin:
-        print(f"❌ Admin not found for email: {credentials.email}")
+        print(f"❌ Admin not found for email/username: {credentials.email}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=AUTH_ERROR_INVALID_CREDENTIALS,
