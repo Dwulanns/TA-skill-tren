@@ -22,7 +22,7 @@ requests==2.32.3
 lxml==5.3.0
 
 # LLM & AI (Groq only)
-groq==1.9.0
+groq==1.0.0python --version
 
 # Fuzzy String Matching for Skill Deduplication
 rapidfuzz==3.10.1
