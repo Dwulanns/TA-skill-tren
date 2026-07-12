@@ -1,8 +1,9 @@
 """
 Logging Configuration Module
 Provides centralized, consistent logging across the application.
-Implements SRP by separating logging setup from logger creation.
+Compatible with local development and Vercel Serverless.
 """
+
 import logging
 import os
 import sys
@@ -12,138 +13,122 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 try:
-    # Try relative import first (when imported as module)
     from . import config
 except ImportError:
-    # Fall back to absolute import (when run as main)
     import config
 
-from constants import LOG_DIR, LOG_FILE_PATH, LOG_FORMAT, LOG_LEVEL_DEFAULT, LOGGER_NAME
+from constants import (
+    LOG_FILE_PATH,
+    LOG_FORMAT,
+    LOG_LEVEL_DEFAULT,
+    LOGGER_NAME,
+)
+
+# Detect Vercel environment
+IS_VERCEL = os.getenv("VERCEL") == "1"
 
 
 def _create_logger(name: str) -> logging.Logger:
-    """
-    Create and configure a logger instance
-    
-    Args:
-        name: Logger name (typically module name)
-        
-    Returns:
-        Configured logging.Logger instance
-    """
-    logger = logging.getLogger(name)
-    return logger
+    return logging.getLogger(name)
 
 
 def _ensure_log_directory_exists() -> None:
-    """Create logs directory if it doesn't exist"""
+    """Create logs directory only for local development."""
+    if IS_VERCEL:
+        return
+
     log_dir = Path(LOG_FILE_PATH).parent
     log_dir.mkdir(parents=True, exist_ok=True)
 
 
-def _create_file_handler() -> logging.FileHandler:
-    """Create file handler for logging to file"""
-    file_handler = logging.FileHandler(LOG_FILE_PATH)
-    file_handler.setLevel(getattr(logging, LOG_LEVEL_DEFAULT))
-    return file_handler
+def _create_file_handler():
+    """Create file handler (disabled on Vercel)."""
+    if IS_VERCEL:
+        return None
+
+    handler = logging.FileHandler(LOG_FILE_PATH)
+    handler.setLevel(getattr(logging, LOG_LEVEL_DEFAULT))
+    return handler
 
 
-def _create_console_handler() -> logging.StreamHandler:
-    """Create console handler for logging to stdout"""
-    console_handler = logging.StreamHandler()
-    console_handler.setLevel(getattr(logging, LOG_LEVEL_DEFAULT))
-    return console_handler
+def _create_console_handler():
+    handler = logging.StreamHandler()
+    handler.setLevel(getattr(logging, LOG_LEVEL_DEFAULT))
+    return handler
 
 
-def _create_formatter() -> logging.Formatter:
-    """Create log formatter"""
+def _create_formatter():
     return logging.Formatter(LOG_FORMAT)
 
 
-def _add_handlers_to_logger(logger: logging.Logger, handlers: list) -> None:
-    """
-    Add multiple handlers to logger
-    
-    Args:
-        logger: Target logger instance
-        handlers: List of handlers to add
-    """
-    for handler in handlers:
-        logger.addHandler(handler)
-
-
 def setup_logging() -> logging.Logger:
-    """
-    Initialize and configure logging for the application
-    
-    Returns:
-        logging.Logger: Configured logger instance
-    """
-    # Ensure log directory exists
-    _ensure_log_directory_exists()
-    
-    # Create logger
+
     logger = _create_logger(LOGGER_NAME)
     logger.setLevel(getattr(logging, LOG_LEVEL_DEFAULT))
-    
-    # Remove existing handlers to avoid duplicates
-    logger.handlers.clear()
-    
-    # Create handlers
-    file_handler = _create_file_handler()
-    console_handler = _create_console_handler()
-    
-    # Create formatter and apply to handlers
+
+    if logger.handlers:
+        logger.handlers.clear()
+
     formatter = _create_formatter()
-    file_handler.setFormatter(formatter)
+
+    console_handler = _create_console_handler()
     console_handler.setFormatter(formatter)
-    
-    # Add handlers to logger
-    _add_handlers_to_logger(logger, [file_handler, console_handler])
-    
+    logger.addHandler(console_handler)
+
+    if not IS_VERCEL:
+        _ensure_log_directory_exists()
+
+        file_handler = _create_file_handler()
+        if file_handler:
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+
     return logger
 
 
 def get_logger(name: str) -> logging.Logger:
-    """
-    Get a logger instance with the given name
-    
-    Args:
-        name: Name of the logger (typically __name__)
-    
-    Returns:
-        logging.Logger: Logger instance
-    """
-    logger = _create_logger(f"{LOGGER_NAME}.{name}")
+    logger = logging.getLogger(f"{LOGGER_NAME}.{name}")
+
     if not logger.handlers:
-        setup_logging()
+        logger.handlers.clear()
+
+        formatter = _create_formatter()
+
+        console_handler = _create_console_handler()
+        console_handler.setFormatter(formatter)
+        logger.addHandler(console_handler)
+
+        if not IS_VERCEL:
+            _ensure_log_directory_exists()
+
+            file_handler = _create_file_handler()
+            if file_handler:
+                file_handler.setFormatter(formatter)
+                logger.addHandler(file_handler)
+
+        logger.setLevel(getattr(logging, LOG_LEVEL_DEFAULT))
+
     return logger
 
 
-# Initialize default logger
 logger = setup_logging()
 
 
-def log_info(message: str, *args, **kwargs) -> None:
-    """Log info level message"""
+def log_info(message: str, *args, **kwargs):
     logger.info(message, *args, **kwargs)
 
 
-def log_warning(message: str, *args, **kwargs) -> None:
-    """Log warning level message"""
+def log_warning(message: str, *args, **kwargs):
     logger.warning(message, *args, **kwargs)
 
 
-def log_error(message: str, *args, **kwargs) -> None:
-    """Log error level message"""
+def log_error(message: str, *args, **kwargs):
     logger.error(message, *args, **kwargs)
 
 
-def log_debug(message: str, *args, **kwargs) -> None:
-    """Log debug level message"""
+def log_debug(message: str, *args, **kwargs):
     logger.debug(message, *args, **kwargs)
 
 
-def log_critical(message: str, *args, **kwargs) -> None:
-    """Log critical level message"""
+def log_critical(message: str, *args, **kwargs):
     logger.critical(message, *args, **kwargs)
