@@ -19,8 +19,9 @@ ALLOWED_CORS_ORIGINS = [
     "http://127.0.0.1:3004",
     "http://127.0.0.1:5173",
     
-         # Production Frontend
+        # Production Frontend
     "https://ta-skill-tren-cqlg.vercel.app",
+    "https://ta-skill-tren-vgwb.vercel.app",
 
     # Jika nanti memakai custom domain
     "https://ta-skill-tren.vercel.app",
