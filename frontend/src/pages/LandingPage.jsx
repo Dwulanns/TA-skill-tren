@@ -12,6 +12,7 @@ import {
   IconButton,
   Link as ChakraLink,
   Icon,
+  Stack,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -156,7 +157,12 @@ export default function LandingPage() {
                 teknologi berdasarkan lowongan kerja dari LinkedIn.
               </Text>
 
-              <HStack spacing={4} w="100%" pt={4}>
+              <Stack
+                direction={{ base: "column", sm: "row" }}
+                spacing={4}
+                w="100%"
+                pt={4}
+              >
                 <Button
                   as={RouterLink}
                   to="/dashboard"
@@ -167,6 +173,7 @@ export default function LandingPage() {
                   fontSize="md"
                   fontWeight="600"
                   borderRadius="lg"
+                  w={{ base: "100%", sm: "auto" }}
                   _hover={{
                     bg: isDark ? "#0369a1" : "#0369a1",
                     color: "#ffffff",
@@ -189,6 +196,7 @@ export default function LandingPage() {
                   fontSize="md"
                   fontWeight="600"
                   borderRadius="lg"
+                  w={{ base: "100%", sm: "auto" }}
                   _hover={{
                     bg: isDark
                       ? "rgba(2, 132, 199, 0.1)"
@@ -199,7 +207,7 @@ export default function LandingPage() {
                 >
                   Pelajari Lebih Lanjut
                 </Button>
-              </HStack>
+              </Stack>
             </VStack>
 
             {/* Right: Visual Card */}

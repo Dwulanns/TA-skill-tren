@@ -399,7 +399,7 @@ export default function TrenSkill() {
             Filter Data
           </Heading>
 
-          <SimpleGrid columns={{ base: 1, md: 2, lg: 4 }} spacing={3} mb={3}>
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 5 }} spacing={3} mb={3}>
             {/* Job Title */}
             <Select
               key="filter-keyword"
@@ -545,7 +545,11 @@ export default function TrenSkill() {
             </Select>
           </SimpleGrid>
 
-          <HStack spacing={3}>
+          <Stack
+            direction={{ base: "column", sm: "row" }}
+            spacing={3}
+            w={{ base: "100%", sm: "auto" }}
+          >
             <Button
               onClick={applyFilter}
               bg="blue.600"
@@ -560,6 +564,7 @@ export default function TrenSkill() {
               height="38px"
               borderRadius="md"
               fontWeight="600"
+              w={{ base: "100%", sm: "auto" }}
             >
               Terapkan Filter
             </Button>
@@ -579,10 +584,11 @@ export default function TrenSkill() {
               height="38px"
               borderRadius="md"
               fontWeight="600"
+              w={{ base: "100%", sm: "auto" }}
             >
               Reset
             </Button>
-          </HStack>
+          </Stack>
 
           {activeFilterBadges.length > 0 && (
             <HStack spacing={2} mt={3} flexWrap="wrap">
