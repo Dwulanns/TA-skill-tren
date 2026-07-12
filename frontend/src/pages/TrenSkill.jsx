@@ -416,7 +416,7 @@ export default function TrenSkill() {
               height="40px"
             >
               <option value="" disabled hidden>
-                Pilih Job Title
+                Pilih Pekerjaan
               </option>
               {filterOptions?.keywords?.map((k) => (
                 <option key={k.id} value={k.id}>
