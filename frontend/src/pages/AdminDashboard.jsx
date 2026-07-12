@@ -18,6 +18,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { useTheme } from "../context/ThemeContext";
+import { API_ENDPOINTS } from "../config/api";
 import {
   MdTrendingUp,
   MdStorage,
@@ -41,7 +42,7 @@ const AdminDashboard = () => {
 
   const loadStats = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/stats");
+      const response = await fetch(API_ENDPOINTS.STATISTICS);
       const data = await response.json();
       setStats(data);
     } catch (error) {
@@ -141,7 +142,7 @@ const AdminDashboard = () => {
       description: (
         <VStack align="start" spacing={1}>
           <Text fontSize="sm" color={bodyText}>
-            <Text as="span" fontWeight="600">Backend:</Text> http://localhost:8000
+            <Text as="span" fontWeight="600">Backend:</Text> {import.meta.env.VITE_API_URL || "Connected"}
           </Text>
           <Text fontSize="sm" color={bodyText}>
             <Text as="span" fontWeight="600">Database:</Text> SQLite (skills_trend.db)

@@ -45,6 +45,7 @@ import {
   SearchIcon,
 } from "@chakra-ui/icons";
 import { useTheme } from "../context/ThemeContext";
+import { API_ENDPOINTS } from "../config/api";
 
 const AdminKeywordManagement = () => {
   const { isDark } = useTheme();
@@ -109,7 +110,7 @@ const AdminKeywordManagement = () => {
   const loadKeywords = async () => {
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:8000/api/admin/keywords");
+      const response = await fetch(API_ENDPOINTS.ADMIN.KEYWORDS);
       const data = await response.json();
       const keywordList = Array.isArray(data) ? data : data.keywords || [];
       setKeywords(keywordList);
@@ -154,7 +155,7 @@ const AdminKeywordManagement = () => {
     try {
       if (editingId) {
         const response = await fetch(
-          `http://localhost:8000/api/admin/keywords/${editingId}`,
+          `${API_ENDPOINTS.ADMIN.KEYWORDS}/${editingId}`,
           {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -171,7 +172,7 @@ const AdminKeywordManagement = () => {
         });
       } else {
         const response = await fetch(
-          "http://localhost:8000/api/admin/keywords",
+          API_ENDPOINTS.ADMIN.KEYWORDS,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -212,7 +213,7 @@ const AdminKeywordManagement = () => {
   const handleDeleteConfirm = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8000/api/admin/keywords/${deleteId}`,
+        `${API_ENDPOINTS.ADMIN.KEYWORDS}/${deleteId}`,
         {
           method: "DELETE",
         }

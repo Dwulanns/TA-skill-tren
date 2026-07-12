@@ -3,23 +3,51 @@
  * Centralized API endpoint configuration and helper functions
  */
 
-// API Base URL - use relative path for development (Vite proxy), absolute for production
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  (import.meta.env.DEV ? "/api" : "http://localhost:8000/api");
+// ============================================================================
+// API BASE URL
+// ============================================================================
+// Development  : menggunakan proxy Vite (/api)
+// Production   : menggunakan URL backend dari Vercel
+// ============================================================================
 
-/**
- * API endpoint constants
- */
+const API_BASE_URL = import.meta.env.DEV
+  ? "/api"
+  : import.meta.env.VITE_API_URL || "";
+
+// ============================================================================
+// API ENDPOINTS
+// ============================================================================
+
 export const API_ENDPOINTS = {
-  // ✅ Filters & metadata - SUDAH BENAR
+  // --------------------------------------------------------------------------
+  // General
+  // --------------------------------------------------------------------------
   FILTERS: `${API_BASE_URL}/filters`,
   STATISTICS: `${API_BASE_URL}/stats`,
   EMPLOYEE_SIZES: `${API_BASE_URL}/employee-sizes`,
 
-  // ✅ Dashboard data - SEMUA HARUS TANPA /api tambahan
+  // --------------------------------------------------------------------------
+  // Jobs
+  // --------------------------------------------------------------------------
+  JOBS: `${API_BASE_URL}/jobs`,
+
+  // --------------------------------------------------------------------------
+  // Skills
+  // --------------------------------------------------------------------------
+  TOP_SKILLS: `${API_BASE_URL}/skills/top`,
+
+  // --------------------------------------------------------------------------
+  // Authentication
+  // --------------------------------------------------------------------------
+  AUTH: {
+    LOGIN: `${API_BASE_URL}/auth/login`,
+    PROFILE: `${API_BASE_URL}/auth/profile`,
+  },
+
+  // --------------------------------------------------------------------------
+  // Dashboard
+  // --------------------------------------------------------------------------
   DASHBOARD: {
-    // Endpoint dari JOBS table (lama)
     TOP_SKILLS_BY_TYPE: `${API_BASE_URL}/dashboard/top-skills-by-type`,
     ALL_SKILLS_BY_TYPE: `${API_BASE_URL}/dashboard/all-skills-by-type`,
     SKILL_TREND: `${API_BASE_URL}/dashboard/skill-trend`,
@@ -32,31 +60,39 @@ export const API_ENDPOINTS = {
     SKILL_ALTERNATIVES: `${API_BASE_URL}/dashboard/skill-alternatives`,
     ANALYSIS: `${API_BASE_URL}/dashboard/analysis`,
     TOP_COMPANIES_BY_SKILL: `${API_BASE_URL}/dashboard/top-companies-by-skill`,
-    
-    // ✅ Endpoint dari JOB_ANALYSIS table (baru) - TANPA /api tambahan!
+
+    // Data dari JOB_ANALYSIS
     TOP_SKILLS_BY_TYPE_FROM_ANALYSIS: `${API_BASE_URL}/dashboard/top-skills-by-type-from-analysis`,
     SKILLS_DISTRIBUTION_FROM_ANALYSIS: `${API_BASE_URL}/dashboard/skills-distribution-from-analysis`,
     TREND_BY_MONTH_FROM_ANALYSIS: `${API_BASE_URL}/dashboard/trend-by-month-from-analysis`,
   },
 
-  // ✅ Admin endpoints
+  // --------------------------------------------------------------------------
+  // Admin
+  // --------------------------------------------------------------------------
   ADMIN: {
-    SCRAPE: `${API_BASE_URL}/admin/scrape`,
-    EXTRACT_SKILLS: `${API_BASE_URL}/admin/extract-skills`,
-    SCRAPING_OVERVIEW: `${API_BASE_URL}/admin/scraping-overview`,
-    LOGIN: `${API_BASE_URL}/admin/login`,
+    LOGIN: `${API_BASE_URL}/auth/login`,
     LOGOUT: `${API_BASE_URL}/admin/logout`,
     PROFILE: `${API_BASE_URL}/admin/profile`,
+
+    SCRAPE: `${API_BASE_URL}/admin/scrape`,
+    SCRAPING_OVERVIEW: `${API_BASE_URL}/admin/scraping-overview`,
+    EXTRACT_SKILLS: `${API_BASE_URL}/admin/extract-skills`,
+
+    KEYWORDS: `${API_BASE_URL}/admin/keywords`,
   },
 
-  // ✅ Job Analysis endpoints
+  // --------------------------------------------------------------------------
+  // Job Analysis
+  // --------------------------------------------------------------------------
   JOB_ANALYSIS: `${API_BASE_URL}/job-analysis`,
   JOB_ANALYSIS_LOCATIONS: `${API_BASE_URL}/job-analysis/locations`,
 };
 
-/**
- * Query parameter builder helper
- */
+// ============================================================================
+// QUERY STRING HELPER
+// ============================================================================
+
 export const buildQueryString = (params) => {
   const urlParams = new URLSearchParams();
 
@@ -69,9 +105,10 @@ export const buildQueryString = (params) => {
   return urlParams.toString();
 };
 
-/**
- * Get error message from API response
- */
+// ============================================================================
+// ERROR HELPER
+// ============================================================================
+
 export const getErrorMessage = (error) => {
   if (!error) return "Unknown error occurred";
 
@@ -91,14 +128,17 @@ export const getErrorMessage = (error) => {
   return error.message || "Network error occurred";
 };
 
-/**
- * API configuration constants
- */
+// ============================================================================
+// API CONFIG
+// ============================================================================
+
 export const API_CONFIG = {
-  TIMEOUT: 15000,      // 15 seconds request timeout
-  RETRY_COUNT: 3,      // Number of retries on retriable errors
-  RETRY_DELAY: 1000,   // Base retry delay in milliseconds
+  TIMEOUT: 15000,
+  RETRY_COUNT: 3,
+  RETRY_DELAY: 1000,
 };
+
+// ============================================================================
 
 export default {
   API_BASE_URL,

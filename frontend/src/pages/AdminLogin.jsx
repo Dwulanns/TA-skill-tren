@@ -71,7 +71,7 @@ const AdminLogin = ({ onLoginSuccess }) => {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
-      const backendUrl = "http://localhost:8000";
+      const backendUrl = import.meta.env.VITE_API_URL || "";
       console.log("🌐 Backend URL:", backendUrl);
 
       const response = await fetch(`${backendUrl}/api/auth/login`, {
@@ -137,7 +137,7 @@ const AdminLogin = ({ onLoginSuccess }) => {
         errorMsg =
           "⏱️ Request timeout - Backend tidak merespons dalam 10 detik. Pastikan backend sudah running!";
         console.error(
-          "🔥 TIMEOUT: Backend di http://localhost:8000 tidak merespons"
+          `🔥 TIMEOUT: Backend di ${backendUrl || "relative proxy"} tidak merespons`
         );
       } else if (
         err instanceof TypeError &&

@@ -30,6 +30,7 @@ import {
 } from "@chakra-ui/react";
 import { useTheme } from "../context/ThemeContext";
 import { ChevronLeftIcon, ChevronRightIcon, SearchIcon } from "@chakra-ui/icons";
+import { API_ENDPOINTS } from "../config/api";
 
 // ===========================
 // TableHeader — moved OUTSIDE the main component.
@@ -320,23 +321,23 @@ const AdminDatabaseManagement = () => {
     setLoading(true);
     try {
       if (activeTab === 0) {
-        const response = await fetch(`http://localhost:8000/api/jobs?limit=500`);
+        const response = await fetch(`${API_ENDPOINTS.JOBS}?limit=500`);
         const data = await response.json();
         setAllJobs(Array.isArray(data) ? data : []);
       } else if (activeTab === 1) {
-        const response = await fetch("http://localhost:8000/api/admin/keywords");
+        const response = await fetch(API_ENDPOINTS.ADMIN.KEYWORDS);
         const data = await response.json();
         setAllKeywords(Array.isArray(data?.keywords) ? data.keywords : []);
       } else if (activeTab === 2) {
-        const response = await fetch(`http://localhost:8000/api/skills/top?limit=100`);
+        const response = await fetch(`${API_ENDPOINTS.TOP_SKILLS}?limit=100`);
         const data = await response.json();
         setAllSkills(Array.isArray(data) ? data : []);
       } else if (activeTab === 3) {
-        const response = await fetch(`http://localhost:8000/api/job-analysis?offset=0&limit=1000`);
+        const response = await fetch(`${API_ENDPOINTS.JOB_ANALYSIS}?offset=0&limit=1000`);
         const data = await response.json();
         setAllJobAnalysis(Array.isArray(data) ? data : []);
       } else if (activeTab === 4) {
-        const response = await fetch(`http://localhost:8000/api/dashboard/skill-types`);
+        const response = await fetch(API_ENDPOINTS.DASHBOARD.SKILLS_BY_TYPE);
         const data = await response.json();
         setAllSkillTypes(Array.isArray(data) ? data : []);
       }

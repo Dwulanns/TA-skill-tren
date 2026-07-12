@@ -78,7 +78,7 @@ const AdminScraping = () => {
 
   const loadKeywords = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/admin/keywords");
+      const response = await fetch(API_ENDPOINTS.ADMIN.KEYWORDS);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const data = await response.json();
       const keywordList = data.keywords || [];
@@ -613,7 +613,7 @@ const AdminScraping = () => {
             </CardHeader>
             <CardBody pt={2}>
               <VStack align="start" spacing={{ base: 1, md: 2 }} fontSize={{ base: "xxs", sm: "xs" }} color={textSecondary} fontWeight="500">
-                <Text>• Backend: http://localhost:8000</Text>
+                <Text>• Backend: {import.meta.env.VITE_API_URL || "Connected"}</Text>
                 <Text>• Database: SQLite</Text>
                 <Text>• Rate Limit: 2-5 detik per request</Text>
                 <Text>• Max Pages: Unlimited (otomatis stop)</Text>

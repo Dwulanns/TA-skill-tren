@@ -18,6 +18,7 @@ import {
   Select,
 } from "@chakra-ui/react";
 import { useTheme } from "../context/ThemeContext";
+import { API_ENDPOINTS } from "../config/api";
 
 const PHASES = {
   IDLE: "idle",
@@ -89,7 +90,7 @@ const AdminSkillExtraction = () => {
 
   const loadStats = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/stats");
+      const response = await fetch(API_ENDPOINTS.STATISTICS);
       const data = await response.json();
       setStats(data);
     } catch (error) {
@@ -165,7 +166,7 @@ const AdminSkillExtraction = () => {
       addLog("Menghubungkan ke backend AI extractor...", "info");
 
       const response = await fetch(
-        "http://localhost:8000/api/admin/extract-skills",
+        API_ENDPOINTS.ADMIN.EXTRACT_SKILLS,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
