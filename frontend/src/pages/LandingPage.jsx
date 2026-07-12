@@ -720,7 +720,7 @@ export default function LandingPage() {
               LinkedIn
             </Text>
             <Text fontSize="xs" color={isDark ? "#cffafe" : "#374151"}>
-              Tugas Akhir D4 Teknik Informatika © 2024
+              Tugas Akhir D4 Teknik Informatika © 2026
             </Text>
           </VStack>
         </Container>
