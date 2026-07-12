@@ -18,6 +18,10 @@ ALLOWED_CORS_ORIGINS = [
     "http://127.0.0.1:3002",
     "http://127.0.0.1:3004",
     "http://127.0.0.1:5173",
+    
+      # Production
+    "https://ta-skill-tren-o4zl.vercel.app",
+    "https://ta-skill-tren.vercel.app",
 ]
 
 CORS_CONFIG = {
