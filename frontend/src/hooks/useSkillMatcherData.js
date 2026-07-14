@@ -42,7 +42,7 @@ const SKILL_TYPE_FILTERS = [
  */
 export default function useSkillMatcherData() {
   const toast = useToast();
-  const api = useApi();
+  const { get, post } = useApi();
 
   // States
   const [jobOptions, setJobOptions] = useState([]);
@@ -68,7 +68,7 @@ export default function useSkillMatcherData() {
   const loadEmployeeSizes = useCallback(async () => {
     try {
       setLoadingEmployeeSizes(true);
-      const res = await api.get(API_ENDPOINTS.EMPLOYEE_SIZES);
+      const res = await get(API_ENDPOINTS.EMPLOYEE_SIZES);
       setEmployeeSizeOptions(Array.isArray(res) ? res : []);
     } catch (err) {
       console.error("Gagal memuat employee sizes:", err);
@@ -85,14 +85,14 @@ export default function useSkillMatcherData() {
     } finally {
       setLoadingEmployeeSizes(false);
     }
-  }, [api]);
+  }, [get]);
 
   // Load job options & sizes on mount
   useEffect(() => {
     const fetchOptions = async () => {
       try {
         setLoadingOptions(true);
-        const res = await api.get(API_ENDPOINTS.FILTERS);
+        const res = await get(API_ENDPOINTS.FILTERS);
         if (res?.keywords) {
           setJobOptions(res.keywords);
         }
@@ -104,7 +104,7 @@ export default function useSkillMatcherData() {
       }
     };
     fetchOptions();
-  }, [api, loadEmployeeSizes]);
+  }, [get, loadEmployeeSizes]);
 
   // Fetch local autocomplete suggestions for skills
   useEffect(() => {
@@ -177,7 +177,7 @@ export default function useSkillMatcherData() {
       if (keywordId) params.keyword_id = keywordId;
       if (employeeSize) params.employee_size = employeeSize;
 
-      const resData = await api.get(API_ENDPOINTS.DASHBOARD.ALL_SKILLS_BY_TYPE, params);
+      const resData = await get(API_ENDPOINTS.DASHBOARD.ALL_SKILLS_BY_TYPE, params);
       setDbSkills(resData || []);
     } catch (err) {
       console.error("Gagal mengambil skill dari database:", err);
@@ -191,7 +191,7 @@ export default function useSkillMatcherData() {
     } finally {
       setLoadingDbSkills(false);
     }
-  }, [jobOptions, targetJobTitle, employeeSize, api, toast]);
+  }, [jobOptions, targetJobTitle, employeeSize, get, toast]);
 
   // Refetch database reference skills when filters change
   useEffect(() => {
@@ -229,7 +229,7 @@ export default function useSkillMatcherData() {
       setLoadingMatch(true);
       const apiBase = API_ENDPOINTS.STATISTICS.replace("/stats", "");
 
-      const resData = await api.post(`${apiBase}/skill-matcher`, {
+      const resData = await post(`${apiBase}/skill-matcher`, {
         targetJobTitle,
         userSkills,
         skillType: skillTypeFilter,
@@ -260,7 +260,7 @@ export default function useSkillMatcherData() {
     } finally {
       setLoadingMatch(false);
     }
-  }, [targetJobTitle, userSkills, skillTypeFilter, employeeSize, api, toast]);
+  }, [targetJobTitle, userSkills, skillTypeFilter, employeeSize, post, toast]);
 
   return {
     jobOptions,

@@ -9,7 +9,7 @@ import { API_ENDPOINTS, getErrorMessage } from "../config/api";
  */
 export default function useSkillNetworkData() {
   const toast = useToast();
-  const api = useApi();
+  const { get } = useApi();
 
   // Search autocomplete state
   const [skillInput, setSkillInput] = useState("");
@@ -47,16 +47,16 @@ export default function useSkillNetworkData() {
     const loadFilters = async () => {
       try {
         setLoadingFilters(true);
-        const resFilters = await api.get(API_ENDPOINTS.FILTERS);
+        const resFilters = await get(API_ENDPOINTS.FILTERS);
         setFilterOptions(resFilters);
 
         // Fetch employee sizes
-        const sizeRes = await api.get(API_ENDPOINTS.EMPLOYEE_SIZES);
+        const sizeRes = await get(API_ENDPOINTS.EMPLOYEE_SIZES);
         setEmployeeSizeOptions(Array.isArray(sizeRes) ? sizeRes : []);
 
         // Fetch autocomplete suggestions list
         const apiBase = API_ENDPOINTS.STATISTICS.replace("/stats", "");
-        const skillsListRes = await api.get(`${apiBase}/skills/list`);
+        const skillsListRes = await get(`${apiBase}/skills/list`);
         setAllSkills(skillsListRes || []);
       } catch (err) {
         console.error("Gagal memuat filter:", err);
@@ -72,7 +72,7 @@ export default function useSkillNetworkData() {
       }
     };
     loadFilters();
-  }, [toast, api]);
+  }, [toast, get]);
 
   // Load categorized skills based on active filters
   const loadCategorizedSkills = useCallback(async () => {
@@ -83,21 +83,21 @@ export default function useSkillNetworkData() {
       if (employeeSize) params.employee_size = employeeSize;
 
       // 1. Tech Stack (skill_type_id: 3)
-      const resTech = await api.get(
+      const resTech = await get(
         API_ENDPOINTS.DASHBOARD.ALL_SKILLS_BY_TYPE,
         { ...params, skill_type_id: 3 }
       );
       setTechStackSkills(resTech || []);
 
       // 2. Technical Skill (skill_type_id: 2)
-      const resTechSkill = await api.get(
+      const resTechSkill = await get(
         API_ENDPOINTS.DASHBOARD.ALL_SKILLS_BY_TYPE,
         { ...params, skill_type_id: 2 }
       );
       setTechnicalSkills(resTechSkill || []);
 
       // 3. Soft Skill (skill_type_id: 1)
-      const resSoft = await api.get(
+      const resSoft = await get(
         API_ENDPOINTS.DASHBOARD.ALL_SKILLS_BY_TYPE,
         { ...params, skill_type_id: 1 }
       );
@@ -107,7 +107,7 @@ export default function useSkillNetworkData() {
     } finally {
       setLoadingCategorySkills(false);
     }
-  }, [keywordId, employeeSize, api]);
+  }, [keywordId, employeeSize, get]);
 
   // Fetch Co-occurrence Network logic
   const handleFetchCooccurrence = useCallback(async (skillName) => {
@@ -120,7 +120,7 @@ export default function useSkillNetworkData() {
     try {
       setLoadingGraph(true);
       const apiBase = API_ENDPOINTS.STATISTICS.replace("/stats", "");
-      const resData = await api.get(`${apiBase}/skill-cooccurrence`, {
+      const resData = await get(`${apiBase}/skill-cooccurrence`, {
         skill: cleanSkill,
         keyword_id: keywordId || undefined,
         employee_size: employeeSize || undefined,
@@ -149,7 +149,7 @@ export default function useSkillNetworkData() {
     } finally {
       setLoadingGraph(false);
     }
-  }, [keywordId, employeeSize, toast, api]);
+  }, [keywordId, employeeSize, toast, get]);
 
   // Reload categorized skills when filters change
   useEffect(() => {
